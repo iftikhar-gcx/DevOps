@@ -35,15 +35,15 @@ jobs:
               Project_02_Changes=true
             fi
           done
-          echo "::set-output name=Project_01_Changes::$Project_01_Changes"
-          echo "::set-output name=Project_02_Changes::$Project_02_Changes"
+          echo "Project_01_Changes=$Project_01_Changes" >> $GITHUB_ENV
+          echo "Project_02_Changes=$Project_02_Changes" >> $GITHUB_ENV
 
 
   project_01:
     name: Uploading Project 01 to netlify
     runs-on: ubuntu-latest
     needs: check-changes
-    if: ${{ needs.check_changes.outputs.Project_01_Changes == true }}
+    if: ${{ needs.check_changes.outputs.Project_01_Changes == 'true' }}
     steps:
       - name: Build Project 01 - Echo
         run : echo "Building Project 01..."
@@ -65,7 +65,7 @@ jobs:
     name: Uploading Project 02 to netlify
     runs-on: ubuntu-latest
     needs: check-changes
-    if: ${{ needs.check_changes.outputs.Project_0_Changes == true }}
+    if: ${{ needs.check_changes.outputs.Project_02_Changes == 'true' }}
     steps:
       - name: Build Project 02 - Echo
         run : echo "Building Project 02..."
