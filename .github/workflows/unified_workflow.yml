@@ -28,6 +28,7 @@ jobs:
           Project_01_Changes=false
           Project_02_Changes=false
           for file in ${{ steps.get_changed_files.outputs.ALL_CHANGED_FILES }}; do
+            echo "$file has changes"
             if [[ $file == *Project_01* ]]; then
               Project_01_Changes=true
             fi
