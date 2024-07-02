@@ -6,8 +6,8 @@ on:
       - master
 
 env:
-  PROJECT_01_CHANGES: false
-  PROJECT_02_CHANGES: false
+  PROJECT_01_CHANGES: 'false'
+  PROJECT_02_CHANGES: 'false'
 
 jobs:
   check-changes:
@@ -27,15 +27,15 @@ jobs:
         env:
           ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
-          PROJECT_01_CHANGES=false
-          PROJECT_02_CHANGES=false
+          env.PROJECT_01_CHANGES='false'
+          env.PROJECT_02_CHANGES='false'
           for file in ${ALL_CHANGED_FILES}; do
             echo "$file has changes"
             if [[ $file == *Project_01* ]]; then
-              PROJECT_01_CHANGES=true
+              env.PROJECT_01_CHANGES='true'
             fi
             if [[ $file == *Project_02* ]]; then
-              PROJECT_02_CHANGES=true
+              env.PROJECT_02_CHANGES='true'
             fi
           done
           echo "Updating Variable Project_01_Changes to $PROJECT_01_CHANGES"
