@@ -1,0 +1,56 @@
+name: NETLIFY - Multi Project Pipeline
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  project_01:
+    name: Uploading Project 01 to netlify
+    runs-on: ubuntu-latest
+    if: ${{ contains(github.event.head_commit.modified, 'Project_01') }}
+    steps:
+      - name: Build Project 01 - Echo
+        run : echo "Building Project 01..."
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Installing Netlify CLI
+        run : npm install -g netlify-cli
+
+      - name: Deploying to Netlify
+        run : |
+          netlify deploy --prod \
+          --dir=. \
+          --site ${{ secrets.NETLIFY_PROJECT_01_SITE_ID }} \
+          --auth ${{ secrets.NETLIFY_Project_01_02_TOKEN }}
+
+  project_02:
+    name: Uploading Project 02 to netlify
+    runs-on: ubuntu-latest
+    if: ${{ contains(github.event.head_commit.modified, 'Project_02') }}
+    steps:
+      - name: Build Project 02 - Echo
+        run : echo "Building Project 02..."
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Installing Netlify CLI
+        run : npm install -g netlify-cli
+
+      - name: Deploying to Netlify
+        run : |
+          netlify deploy --prod \
+          --dir=. \
+          --site ${{ secrets.NETLIFY_PROJECT_02_SITE_ID }} \
+          --auth ${{ secrets.NETLIFY_Project_01_02_TOKEN }}
+
+  no_project:
+      name: Failure
+      runs-on: ubuntu-latest
+      steps:
+        - name: Echo failure
+          run : echo "Building conditions failed..."
