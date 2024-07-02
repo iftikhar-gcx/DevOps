@@ -41,6 +41,18 @@ jobs:
           echo "Updating Variable Project_02_Changes to $Project_02_Changes"
           echo "Project_02_Changes=$Project_02_Changes" >> $GITHUB_ENV
 
+  echo:
+    name: Echoing Variables
+    runs-on: ubuntu-latest
+    needs: check-changes
+    steps:
+      - name: Variables Check
+        run: |
+          echo "Value of Project_01_Changes is: ${{ needs.check_changes.outputs.Project_01_Changes }}"
+          echo "Condition check: ${{ needs.check_changes.outputs.Project_01_Changes == 'true' }}"
+          echo "Value of Project_02_Changes is: ${{ needs.check_changes.outputs.Project_02_Changes }}"
+          echo "Condition check: ${{ needs.check_changes.outputs.Project_02_Changes == 'true' }}"
+
 
   project_01:
     name: Uploading Project 01 to netlify
