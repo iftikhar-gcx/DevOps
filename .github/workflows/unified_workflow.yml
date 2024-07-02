@@ -5,13 +5,14 @@ on:
     branches:
       - master
 
+env:
+  PROJECT_01_CHANGES: false
+  PROJECT_02_CHANGES: false
+
 jobs:
   check-changes:
     runs-on: ubuntu-latest
-    name: Test changed-files
-    outputs:
-        Project_01_Changes: ${{ steps.set_project_changes.outputs.Project_01_Changes }}
-        Project_02_Changes: ${{ steps.set_project_changes.outputs.Project_02_Changes }}
+    name: Updates Files
     steps:
       - uses: actions/checkout@v4
         with:
@@ -26,21 +27,19 @@ jobs:
         env:
           ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
-          Project_01_Changes=false
-          Project_02_Changes=false
+          PROJECT_01_CHANGES=false
+          PROJECT_02_CHANGES=false
           for file in ${ALL_CHANGED_FILES}; do
             echo "$file has changes"
             if [[ $file == *Project_01* ]]; then
-              Project_01_Changes=true
+              PROJECT_01_CHANGES=true
             fi
             if [[ $file == *Project_02* ]]; then
-              Project_02_Changes=true
+              PROJECT_02_CHANGES=true
             fi
           done
-          echo "Updating Variable Project_01_Changes to $Project_01_Changes"
-          echo "Project_01_Changes=$Project_01_Changes" >> $GITHUB_ENV
-          echo "Updating Variable Project_02_Changes to $Project_02_Changes"
-          echo "Project_02_Changes=$Project_02_Changes" >> $GITHUB_ENV
+          echo "Updating Variable Project_01_Changes to $PROJECT_01_CHANGES"
+          echo "Updating Variable Project_02_Changes to $PROJECT_02_CHANGES"
 
   echo:
     name: Echoing Variables
@@ -49,17 +48,17 @@ jobs:
     steps:
       - name: Variables Check
         run: |
-          echo "Value of Project_01_Changes is: ${{ needs.check_changes.outputs.Project_01_Changes }}"
-          echo "Condition check: ${{ needs.check_changes.outputs.Project_01_Changes == 'true' }}"
-          echo "Value of Project_02_Changes is: ${{ needs.check_changes.outputs.Project_02_Changes }}"
-          echo "Condition check: ${{ needs.check_changes.outputs.Project_02_Changes == 'true' }}"
+          echo "Value of Project_01_Changes is: $PROJECT_01_CHANGES"
+          echo "Condition check: ${{ PROJECT_01_CHANGES == 'true' }}"
+          echo "Value of Project_02_Changes is: $PROJECT_02_CHANGES"
+          echo "Condition check: ${{ PROJECT_02_CHANGES == 'true' }}"
 
 
   project_01:
     name: Uploading Project 01 to netlify
     runs-on: ubuntu-latest
     needs: check-changes
-    if: ${{ needs.check_changes.outputs.Project_01_Changes == 'true' }}
+    if: ${{ PROJECT_01_CHANGES == 'true' }}
     steps:
       - name: Build Project 01 - Echo
         run : echo "Building Project 01..."
@@ -81,7 +80,7 @@ jobs:
     name: Uploading Project 02 to netlify
     runs-on: ubuntu-latest
     needs: check-changes
-    if: ${{ needs.check_changes.outputs.Project_02_Changes == 'true' }}
+    if: ${{ PROJECT_02_CHANGES == 'true' }}
     steps:
       - name: Build Project 02 - Echo
         run : echo "Building Project 02..."
