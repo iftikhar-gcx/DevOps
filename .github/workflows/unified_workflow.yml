@@ -6,6 +6,17 @@ on:
       - master
 
 jobs:
+  debug:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+        
+        - name: Debug Information
+          run: |
+            echo "Modified files:"
+            echo "${{ toJson(github.event.head_commit.modified) }}"
+
   project_01:
     name: Uploading Project 01 to netlify
     runs-on: ubuntu-latest
