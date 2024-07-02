@@ -26,6 +26,8 @@ jobs:
         env:
           ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
+          project_01_changes='false'
+          project_02_changes='false'
           for file in ${ALL_CHANGED_FILES}; do
             echo "$file has changes"
             if [[ $file == *Project_01* ]]; then
