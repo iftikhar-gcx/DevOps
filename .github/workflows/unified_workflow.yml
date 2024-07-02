@@ -36,7 +36,7 @@ jobs:
             fi
             if [[ $file == *Project_02* ]]; then
               project_02_changes='true'
-              echo "Project_02_Changes=$project_02_changes" >> $GITHUB_OUTPUT
+              echo "PROJECT_02_CHANGES=$project_02_changes" >> $GITHUB_OUTPUT
             fi
           done
           echo "Updating Variable Project_01_Changes to $project_01_changes"
