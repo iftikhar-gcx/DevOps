@@ -27,15 +27,13 @@ jobs:
         env:
           ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
-          env.PROJECT_01_CHANGES='false'
-          env.PROJECT_02_CHANGES='false'
           for file in ${ALL_CHANGED_FILES}; do
             echo "$file has changes"
             if [[ $file == *Project_01* ]]; then
-              env.PROJECT_01_CHANGES='true'
+              echo "::set-env name=PROJECT_01_CHANGES::true"
             fi
             if [[ $file == *Project_02* ]]; then
-              env.PROJECT_02_CHANGES='true'
+              echo "::set-env name=PROJECT_02_CHANGES::true"
             fi
           done
           echo "Updating Variable Project_01_Changes to $PROJECT_01_CHANGES"
