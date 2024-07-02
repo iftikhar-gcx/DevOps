@@ -56,7 +56,7 @@ jobs:
     name: Uploading Project 01 to netlify
     runs-on: ubuntu-latest
     needs: check-changes
-    if: ${{ env.PROJECT_01_CHANGES == 'true' }}
+    if: ${{ PROJECT_01_CHANGES == 'true' }}
     steps:
       - name: Build Project 01 - Echo
         run : echo "Building Project 01..."
