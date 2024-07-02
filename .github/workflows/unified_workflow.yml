@@ -57,7 +57,7 @@ jobs:
     name: Uploading Project 01 to netlify
     runs-on: ubuntu-latest
     needs: check-changes
-    if: ${{ steps.set_project_changes.outputs.PROJECT_01_CHANGES == 'true' }}
+    if: ${{ needs.check-changes.outputs.project_01_changes == 'true' }}
     steps:
       - name: Build Project 01 - Echo
         run : echo "Building Project 01..."
@@ -79,7 +79,7 @@ jobs:
     name: Uploading Project 02 to netlify
     runs-on: ubuntu-latest
     needs: check-changes
-    if: ${{ steps.set_project_changes.outputs.PROJECT_02_CHANGES == 'true' }}
+    if: ${{ needs.check-changes.outputs.project_02_changes == 'true' }}
     steps:
       - name: Build Project 02 - Echo
         run : echo "Building Project 02..."
