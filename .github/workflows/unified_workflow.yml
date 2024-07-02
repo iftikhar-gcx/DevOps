@@ -6,26 +6,46 @@ on:
       - master
 
 jobs:
-  check_changes_01:
+  check-changes:
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Check if changes in Project_01
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        
+      - name: List modified files
+        id: list_changes
+        run: |
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} > changed_files.txt
+          cat changed_files.txt
+          
+      - name: Check if Project_01 changed
         id: check_project_01_changes
         run: |
-          if git diff --quiet --exit-code ${{ github.event.before }} ${{ github.sha }} -- 'Project_01/'; then
-            echo "::set-output name=changes::false"
+          if grep -q '^Project_01/' changed_files.txt; then
+            echo "Project_01 changed"
+            echo "::set-output name=project_01_changed::true"
           else
-            echo "::set-output name=changes::true"
+            echo "No changes in Project_01"
+            echo "::set-output name=project_01_changed::false"
           fi
+          
+      - name: Check if Project_02 changed
+        id: check_project_02_changes
+        run: |
+          if grep -q '^Project_02/' changed_files.txt; then
+            echo "Project_02 changed"
+            echo "::set-output name=project_02_changed::true"
+          else
+            echo "No changes in Project_02"
+            echo "::set-output name=project_02_changed::false"
+          fi
+
 
   project_01:
     name: Uploading Project 01 to netlify
     runs-on: ubuntu-latest
-    needs: [check_changes_01]
-    if: ${{ needs.check_changes.outputs.changes == 'true' }}
+    if: ${{ needs.check-changes.outputs.project_01_changed == 'true' }}
     steps:
       - name: Build Project 01 - Echo
         run : echo "Building Project 01..."
@@ -43,26 +63,10 @@ jobs:
           --site ${{ secrets.NETLIFY_PROJECT_01_SITE_ID }} \
           --auth ${{ secrets.NETLIFY_Project_01_02_TOKEN }}
 
-  check_changes_02:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Check if changes in Project_02
-        id: check_project_02_changes
-        run: |
-          if git diff --quiet --exit-code ${{ github.event.before }} ${{ github.sha }} -- 'Project_02/'; then
-            echo "::set-output name=changes::false"
-          else
-            echo "::set-output name=changes::true"
-          fi
-
   project_02:
     name: Uploading Project 02 to netlify
     runs-on: ubuntu-latest
-    needs: [check_changes_02]
-    if: ${{ needs.check_changes.outputs.changes == 'true' }}
+    if: ${{ needs.check-changes.outputs.project_02_changed == 'true' }}
     steps:
       - name: Build Project 02 - Echo
         run : echo "Building Project 02..."
