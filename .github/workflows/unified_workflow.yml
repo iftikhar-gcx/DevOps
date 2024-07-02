@@ -9,6 +9,9 @@ jobs:
   check-changes:
     runs-on: ubuntu-latest
     name: Test changed-files
+    outputs:
+        Project_01_Changes: ${{ steps.set_project_changes.outputs.Project_01_Changes }}
+        Project_02_Changes: ${{ steps.set_project_changes.outputs.Project_02_Changes }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -22,16 +25,25 @@ jobs:
         env:
           ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
-          for file in ${ALL_CHANGED_FILES}; do
-            echo "$file was changed"
+          Project_01_Changes=false
+          Project_02_Changes=false
+          for file in ${{ steps.get_changed_files.outputs.ALL_CHANGED_FILES }}; do
+            if [[ $file == *Project_01* ]]; then
+              Project_01_Changes=true
+            fi
+            if [[ $file == *Project_02* ]]; then
+              Project_02_Changes=true
+            fi
           done
+          echo "::set-output name=Project_01_Changes::$Project_01_Changes"
+          echo "::set-output name=Project_02_Changes::$Project_02_Changes"
 
 
   project_01:
     name: Uploading Project 01 to netlify
     runs-on: ubuntu-latest
     needs: check-changes
-    if: ${{ needs.check-changes.outputs.project_01_changed == 'true' }}
+    if: ${{ needs.check_changes.outputs.Project_01_Changes == true }}
     steps:
       - name: Build Project 01 - Echo
         run : echo "Building Project 01..."
@@ -53,7 +65,7 @@ jobs:
     name: Uploading Project 02 to netlify
     runs-on: ubuntu-latest
     needs: check-changes
-    if: ${{ needs.check-changes.outputs.project_02_changed == 'true' }}
+    if: ${{ needs.check_changes.outputs.Project_02_Changes == true }}
     steps:
       - name: Build Project 02 - Echo
         run : echo "Building Project 02..."
