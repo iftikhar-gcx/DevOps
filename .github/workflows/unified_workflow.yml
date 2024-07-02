@@ -22,6 +22,7 @@ jobs:
         uses: tj-actions/changed-files@v44
 
       - name: List all changed files
+        id: set_project_changes
         env:
           ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
