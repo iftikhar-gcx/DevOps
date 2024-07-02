@@ -36,7 +36,9 @@ jobs:
               Project_02_Changes=true
             fi
           done
+          echo "Updating Variable Project_01_Changes to $Project_01_Changes"
           echo "Project_01_Changes=$Project_01_Changes" >> $GITHUB_ENV
+          echo "Updating Variable Project_02_Changes to $Project_02_Changes"
           echo "Project_02_Changes=$Project_02_Changes" >> $GITHUB_ENV
 
 
