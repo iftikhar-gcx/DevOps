@@ -65,7 +65,7 @@ jobs:
     name: Uploading Project 02 to netlify
     runs-on: ubuntu-latest
     needs: check-changes
-    if: ${{ needs.check_changes.outputs.Project_02_Changes == true }}
+    if: ${{ needs.check_changes.outputs.Project_0_Changes == true }}
     steps:
       - name: Build Project 02 - Echo
         run : echo "Building Project 02..."
@@ -86,6 +86,7 @@ jobs:
   no_project:
       name: Failure
       runs-on: ubuntu-latest
+      needs: [project_01, project_02]
       steps:
         - name: Echo failure
           run : echo "Building conditions failed..."
