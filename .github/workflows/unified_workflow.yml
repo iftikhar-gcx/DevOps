@@ -47,9 +47,9 @@ jobs:
     steps:
       - name: Variables Check
         run: |
-          echo "Value of Project_01_Changes is: ${{needs.check-changes.outputs.project_01_changes}}"
+          echo "Value of Project_01_Changes is: ${{ needs.check-changes.outputs.project_01_changes }}"
           echo "Condition check: ${{ needs.check-changes.outputs.project_02_changes == 'true' }}"
-          echo "Value of Project_02_Changes is: ${{needs.check-changes.outputs.project_02_changes}}"
+          echo "Value of Project_02_Changes is: ${{ needs.check-changes.outputs.project_02_changes }}"
           echo "Condition check: ${{ needs.check-changes.outputs.project_02_changes == 'true' }}"
 
 
@@ -57,7 +57,7 @@ jobs:
     name: Uploading Project 01 to netlify
     runs-on: ubuntu-latest
     needs: check-changes
-    if: ${{ needs.check-changes.outputs.project_01_changes == 'true' }}
+    if: ${{ needs.check-changes.env.PROJECT_01_CHANGES == 'true' }}
     steps:
       - name: Build Project 01 - Echo
         run : echo "Building Project 01..."
@@ -79,7 +79,7 @@ jobs:
     name: Uploading Project 02 to netlify
     runs-on: ubuntu-latest
     needs: check-changes
-    if: ${{ needs.check-changes.outputs.project_02_changes == 'true' }}
+    if: ${{ needs.check-changes.env.PROJECT_02_CHANGES == 'true' }}
     steps:
       - name: Build Project 02 - Echo
         run : echo "Building Project 02..."
