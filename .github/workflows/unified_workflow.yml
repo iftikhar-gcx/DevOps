@@ -27,7 +27,7 @@ jobs:
         run: |
           Project_01_Changes=false
           Project_02_Changes=false
-          for file in ${{ ALL_CHANGED_FILES }}; do
+          for file in ${ALL_CHANGED_FILES}; do
             echo "$file has changes"
             if [[ $file == *Project_01* ]]; then
               Project_01_Changes=true
