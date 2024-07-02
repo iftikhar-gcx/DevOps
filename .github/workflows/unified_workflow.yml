@@ -9,9 +9,6 @@ jobs:
   check-changes:
     runs-on: ubuntu-latest
     name: Updates Files
-    outputs:
-      project_01_changes: ${{ steps.set_project_changes.outputs.PROJECT_01_CHANGES }}
-      project_02_changes: ${{ steps.set_project_changes.outputs.PROJECT_02_CHANGES }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -41,6 +38,9 @@ jobs:
           done
           echo "Updating Variable Project_01_Changes to $project_01_changes"
           echo "Updating Variable Project_02_Changes to $project_02_changes"
+    outputs:
+      project_01_changes: ${{ steps.set_project_changes.outputs.PROJECT_01_CHANGES }}
+      project_02_changes: ${{ steps.set_project_changes.outputs.PROJECT_02_CHANGES }}
 
   echo:
     name: Echoing Variables
