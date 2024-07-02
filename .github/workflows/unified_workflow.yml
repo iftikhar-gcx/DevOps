@@ -47,10 +47,10 @@ jobs:
     steps:
       - name: Variables Check
         run: |
-          echo "Value of Project_01_Changes is: ${{ needs.check-changes.outputs.project_01_changes }}"
-          echo "Condition check: ${{ needs.check-changes.outputs.project_02_changes == 'true' }}"
-          echo "Value of Project_02_Changes is: ${{ needs.check-changes.outputs.project_02_changes }}"
-          echo "Condition check: ${{ needs.check-changes.outputs.project_02_changes == 'true' }}"
+          echo "Value of Project_01_Changes is: ${{ needs.check-changes.env.PROJECT_01_CHANGES }}"
+          echo "Condition check: ${{ needs.check-changes.env.PROJECT_01_CHANGES == 'true' }}"
+          echo "Value of Project_02_Changes is: ${{ needs.check-changes.env.PROJECT_02_CHANGES }}"
+          echo "Condition check: ${{ needs.check-changes.env.PROJECT_02_CHANGES == 'true' }}"
 
 
   project_01:
