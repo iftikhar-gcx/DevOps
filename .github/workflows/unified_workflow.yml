@@ -37,7 +37,9 @@ jobs:
             fi
           done
           echo "Updating Variable Project_01_Changes to $project_01_changes"
+          echo "Updating Steps Variable Project_01_Changes to ${{steps.set_project_changes.outputs.project_01_changes}}"
           echo "Updating Variable Project_02_Changes to $project_02_changes"
+          echo "Updating Steps Variable Project_02_Changes to ${{steps.set_project_changes.outputs.project_02_changes}}"
     outputs:
       project_01_changes: ${{ steps.set_project_changes.outputs.project_01_changes }}
       project_02_changes: ${{ steps.set_project_changes.outputs.project_02_changes }}
