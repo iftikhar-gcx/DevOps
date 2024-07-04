@@ -1,7 +1,0 @@
-name: Project 1 Build
-
-on:
-  push:
-    branches:
-      - master
-    paths: "Project_01/**"
